@@ -1,0 +1,14 @@
+instance_tag:
+        - master
+        - worker1
+        - worker2
+packages:
+        - boto
+        - boto3
+region: us-east-1
+vpc: vpc-0201bee8e4992c241
+subnet: subnet-0731f62ff434b2f93
+ami_id: ami-03ededff12e34e59e
+sg: sg-00909db7cd072843b
+keypair: vijay-key
+instance_type: t2.micro
