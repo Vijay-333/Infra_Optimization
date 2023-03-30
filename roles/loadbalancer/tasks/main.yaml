@@ -1,0 +1,22 @@
+---
+- name: Creating load balancer
+  elb_classic_lb:
+    name: "{{ lb }}"
+    state: present
+    aws_access_key: "{{ Access_key }}"
+    aws_secret_key: "{{ Secret_key }}"
+    region: "{{ region }}"
+    security_group_names: "{{ sg }}"
+    listeners:
+      - protocol: http
+        load_balancer_port: 80
+        instance_port: 80
+- name: Adding instances to Loadbalancer
+  ec2elb:
+    aws_access_key: "{{ Access_key }}"
+    aws_secret_key: "{{ Secret_key }}"
+    instance_id: "{{ item }}"
+    ec2_elbs: "{{ lb }}"
+    state: present
+    region: "{{ region }}"
+  loop: "{{ instance }}"

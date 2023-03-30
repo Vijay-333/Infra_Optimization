@@ -1,0 +1,15 @@
+---
+- name: Launching EC2 Instances
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+  - aws_cred.yaml
+  roles:
+  - ec2
+- name: Configuring and Adding LoadBalancer to Instances
+  hosts: master, worker
+  gather_facts: no
+  vars_files:
+  - aws_cred.yaml
+  roles:
+  - loadbalancer

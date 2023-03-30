@@ -1,0 +1,66 @@
+- name: Install python
+  apt:
+    name: python3
+    state: present
+- name: Install boto packages
+  pip:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+- name: Install Security Group
+  ec2_security_group:
+    name: "{{ sg }}"
+    region: "{{ region }}"
+    aws_access_key: "{{ Access_key }}"
+    aws_secret_key: "{{ Secret_key }}"
+    rules:
+    - proto: all
+      cidr_ip: 0.0.0.0/0
+    rules_egress:
+    - proto: all
+      cidr_ip: 0.0.0.0/0
+- name: Creating EC2 instances
+  ec2:
+    aws_access_key: "{{ Access_key }}"
+    aws_secret_key: "{{ Secret_key }}"
+    instance_type: "{{ instance_type }}"
+    image: "{{ ami_id }}"
+    key_name: "{{ keypair }}"
+    wait: true
+    group: "{{ sg }}"
+    count: 1
+    vpc_subnet_id: "{{ subnet }}"
+    assign_public_ip: yes
+    region: "{{ region }}"
+    state: present
+    instance_tags:
+      Name: "{{ item }}"
+  register: ec2
+  loop: "{{ instance }}"
+- name: Add master instance to inventory
+  add_host:
+    hostname: "{{ ec2.results[0].instances[0].public_ip }}"
+    groupname: master
+- name: Add worker1 instance to inventory
+  add_host:
+    hostname: "{{ ec2.results[1].instances[0].public_ip }}"
+    groupname: worker1
+- name: Add worker2 instance to inventory
+  add_host:
+    hostname: "{{ ec2.results[2].instances[0].public_ip }}"
+    groupname: worker2
+- name: Waiting for master to start
+  wait_for:
+    host: "{{ ec2.results[0].instances[0].public_dns_name }}"
+    port: 22
+    state: started
+- name: Waiting for worker1 to start
+  wait_for:
+    host: "{{ ec2.results[1].instances[0].public_dns_name }}"
+    port: 22
+    state: started
+- name: Waiting for worker2 to start
+  wait_for:
+    host: "{{ ec2.results[2].instances[0].public_dns_name }}"
+    port: 22
+    state: started
