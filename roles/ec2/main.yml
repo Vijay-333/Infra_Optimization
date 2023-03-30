@@ -1,0 +1,8 @@
+---
+- name: Installing localhost
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+  - /home/vijayvelraja333/Infra_Optimization/aws_cred.yaml
+  roles:
+  - ec2

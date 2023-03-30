@@ -1,0 +1,10 @@
+- name: Install python
+  apt:
+    name: python3
+    state: present
+- name: Install boto packages
+  pip:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+
