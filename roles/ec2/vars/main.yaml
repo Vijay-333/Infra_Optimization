@@ -2,13 +2,11 @@ instance:
         - master
         - worker1
         - worker2
-packages:
-        - boto
-        - boto3
+packages: boto3
 region: us-east-1
-vpc: vpc-0201bee8e4992c241
-subnet: subnet-0731f62ff434b2f93
-ami_id: ami-03ededff12e34e59e
-sg: sg-00909db7cd072843b
-keypair: vijay-key
+vpc: vpc-027f4cbd4438c82c5
+subnet: subnet-024706ee71fc07cc0
+sg: my_sg
+ami_id: ami-00c39f71452c08778
+keyname: vijay-keypair
 instance_type: t2.micro

@@ -5,4 +5,4 @@ instance:
   - worker2
 region: us-east-1
 lb: ec2elb
-sg: sg-00909db7cd072843b
+sg: sg-02157848f59a1c29e

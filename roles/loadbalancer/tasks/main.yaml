@@ -12,7 +12,7 @@
         load_balancer_port: 80
         instance_port: 80
 - name: Adding instances to Loadbalancer
-  ec2elb:
+  ec2_elb_lb:
     aws_access_key: "{{ Access_key }}"
     aws_secret_key: "{{ Secret_key }}"
     instance_id: "{{ item }}"
