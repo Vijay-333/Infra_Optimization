@@ -7,7 +7,7 @@
   roles:
   - ec2
 - name: Configuring and Adding LoadBalancer to Instances
-  hosts: master, worker
+  hosts: localhost
   gather_facts: no
   vars_files:
   - aws_cred.yaml

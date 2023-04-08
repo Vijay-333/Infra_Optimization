@@ -5,6 +5,7 @@
     state: present
     aws_access_key: "{{ Access_key }}"
     aws_secret_key: "{{ Secret_key }}"
+    aws_security_token: "{{ Security_token }}"
     region: "{{ region }}"
     security_group_names: "{{ sg }}"
     listeners:
@@ -12,9 +13,10 @@
         load_balancer_port: 80
         instance_port: 80
 - name: Adding instances to Loadbalancer
-  ec2_elb_lb:
+  elb_instance:
     aws_access_key: "{{ Access_key }}"
     aws_secret_key: "{{ Secret_key }}"
+    aws_security_token: "{{ Security_token }}"
     instance_id: "{{ item }}"
     ec2_elbs: "{{ lb }}"
     state: present

@@ -1,8 +1,8 @@
 ---
 instance:
-  - master
-  - worker1
-  - worker2
+        - master
+        - worker1
+        - worker2
 region: us-east-1
 lb: ec2elb
-sg: sg-02157848f59a1c29e
+sg: my_sg

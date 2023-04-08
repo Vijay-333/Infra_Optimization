@@ -46,9 +46,6 @@
     name: "{{ item }}"
   register: ec2
   loop: "{{ instance }}"
-- name: Second Task - Print the full output
-  ansible.builtin.debug:
-    var: ec2
 - name: Add master instance to inventory
   add_host:
     hostname: "{{ ec2.results[0].instances[0].public_ip_address }}"
