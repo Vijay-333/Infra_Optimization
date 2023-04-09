@@ -4,8 +4,8 @@ instance:
         - worker2
 packages: boto3
 region: us-east-1
-vpc: vpc-053a48b9fd0149a19
-subnet: subnet-003d38c87b68e83f8
+vpc: vpc-0aaf5e810ba73bb33
+subnet: subnet-013d29b0cc9b39628
 sg: my_sg
 ami_id: ami-00c39f71452c08778
 keyname: vijay-keypair

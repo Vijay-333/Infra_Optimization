@@ -7,11 +7,15 @@
     aws_secret_key: "{{ Secret_key }}"
     aws_security_token: "{{ Security_token }}"
     region: "{{ region }}"
+    subnets: "{{ subnet }}"
+    wait: true
+    cross_az_load_balancing: true
+    scheme: internet-facing
     security_group_names: "{{ sg }}"
     listeners:
       - protocol: http
         load_balancer_port: 80
-        instance_port: 80
+        instance_port: 81
 - name: Adding instances to Loadbalancer
   elb_instance:
     aws_access_key: "{{ Access_key }}"
