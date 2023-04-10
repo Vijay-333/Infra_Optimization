@@ -46,6 +46,12 @@
     name: "{{ item }}"
   register: ec2
   loop: "{{ instance }}"
+- set_fact:
+    id: "{{ id + item['instance_ids'] }}"
+  with_items:
+    - "{{ ec2.results }}"
+- debug:
+    msg: "{{ id }}"
 - name: Add master instance to inventory
   add_host:
     hostname: "{{ ec2.results[0].instances[0].public_ip_address }}"
@@ -58,16 +64,6 @@
   add_host:
     hostname: "{{ ec2.results[2].instances[0].public_ip_address }}"
     groupname: worker2
-- name: Waiting for master to start
-  wait_for:
-    host: "{{ ec2.results[0].instances[0].public_dns_name }}"
-    port: 22
-    state: started
-- name: Waiting for worker1 to start
-  wait_for:
-    host: "{{ ec2.results[1].instances[0].public_dns_name }}"
-    port: 22
-    state: started
 - name: Waiting for worker2 to start
   wait_for:
     host: "{{ ec2.results[2].instances[0].public_dns_name }}"

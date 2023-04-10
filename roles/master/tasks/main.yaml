@@ -1,0 +1,52 @@
+---
+- name: Adding kubeadm repositories on Master
+  yum_repository:
+    name: kube
+    description: Kubernetes repo
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-$basearch
+    enabled: 1
+    gpgcheck: 1
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+- name: Installing Docker and kubeadm on Master
+  package:
+    name:
+      - docker
+      - kubeadm
+      - iproute-tc
+    state: present
+- name: Staring Docker & kubelet services on Master
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop: "{{ services }}"
+- name: Pulling the images of master
+  command: kubeadm config images pull
+- name: Updating Docker cgroup on Master
+  copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+      "exec-opts": ["native.cgroupdriver=systemd"]
+      }
+- name: Restarting docker on Master
+  service:
+    name: docker
+    state: restarted
+- name: Initializing kubeadm on Master
+  command: kubeadm init --ignore-preflight-errors=all
+  #command: kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=NumCPU --ignore-preflight-errors=Mem
+- name: Setting up kubectl on Master
+  shell:
+    cmd: |
+      mkdir -p $HOME/.kube
+      sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+      sudo chown $(id -u):$(id -g) $HOME/.kube/config
+- name: Deploying Flannel on Master
+  command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+- name: Creating token for workers
+  command: kubeadm token create  --print-join-command
+  register: token
+  ignore_errors: yes
+- name: Cleaning Caches on RAM
+  shell: echo 3 > /proc/sys/vm/drop_caches

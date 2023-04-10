@@ -4,9 +4,10 @@ instance:
         - worker2
 packages: boto3
 region: us-east-1
-vpc: vpc-0aaf5e810ba73bb33
-subnet: subnet-013d29b0cc9b39628
+vpc: vpc-05a81ece4f9c36050
+subnet: subnet-0c9f97348f5ce35aa
 sg: my_sg
 ami_id: ami-00c39f71452c08778
 keyname: vijay-keypair
 instance_type: t2.micro
+id: []

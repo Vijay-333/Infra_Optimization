@@ -6,10 +6,23 @@
   - aws_cred.yaml
   roles:
   - ec2
-- name: Configuring and Adding LoadBalancer to Instances
-  hosts: localhost
+- hosts: master
+  gather_facts: no
+  tasks:
+    - name: Running K8s Master Role
+      include_role:
+        name: master
+- hosts: worker1,worker2
+  gather_facts: no
+  tasks:
+    - name: Running K8s Slave Role
+      include_role:
+        name: worker
+- name: Configuring and Adding LoadBalancer to all Instances
+  hosts: master,worker1,worker2
   gather_facts: no
   vars_files:
   - aws_cred.yaml
+  - roles/ec2/vars/main.yaml
   roles:
   - loadbalancer

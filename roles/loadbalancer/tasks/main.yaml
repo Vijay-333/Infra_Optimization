@@ -25,4 +25,6 @@
     ec2_elbs: "{{ lb }}"
     state: present
     region: "{{ region }}"
-  loop: "{{ instance }}"
+    wait: true
+    wait_timeout: 300
+  loop: "{{ id }}"
